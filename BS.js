@@ -1,10 +1,7 @@
 const fs = require("fs").promises;
-
-async function analyzeCSV() {
-  try {
-    const data = await fs.readFile("./fe02_bank.csv", "utf-8");
-    const lines = data.trim().split("\n");
-    const header = lines[0].split(",").map(head => head.trim());
+  const data = await fs.readFile("./fe02_bank.csv", "utf-8");
+  const lines = data.trim().split("\n");
+  const header = lines[0].split(",").map(head => head.trim());
 
     const transactions = lines.slice(1).map(line => {
       const values = line.split(",").map(value => value.trim());
@@ -46,18 +43,12 @@ async function analyzeCSV() {
       }
     });
 
-    const summary_array = Object.values(summ_arr);
+    const summary = Object.values(summ_arr);
     const headerRow = "AccountHolder,TotalCredit,TotalDebit,LargestTransaction,SalaryTransactions";
     let csv = headerRow + "\n";
 
-    for (let i = 0; i < summary_array.length; i++) {
-      const user = summary_array[i];
+    for (let i = 0; i < summary.length; i++) {
+      const user = summary[i];
       csv += `${user.AccountHolder},${user.TotalCredit},${user.TotalDebit},${user.LargestTransaction},"${user.SalaryTransactions.join(";")}"\n`;
     }
-
     await fs.writeFile("./bank_summary.csv", csv, "utf-8");
-  } catch (err) {
-    console.error("Error:", err);
-  }
-}
-analyzeCSV();
