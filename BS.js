@@ -12,3 +12,5 @@ async function analyzeCSV() {
       return obj;
     });
 }
+  const sorted_data = transactions.sort((a, b) => new Date(a.Date) - new Date(b.Date));
+  
